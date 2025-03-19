@@ -1,5 +1,5 @@
 # Prompts for getting the LLM 'back on track' after it has stopped following instructions
-Credit to https://github.com/ericaxelrod-1
+Credit to [Eric Axelrod](https://github.com/ericaxelrod-1)
  - Tested on 
   - Claude 3.5 Sonnet
   - Claude 3.7 Sonnet
