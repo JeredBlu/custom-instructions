@@ -236,6 +236,7 @@ For each step in your evaluation, follow these specific processes:
     * Glama
     * PulseMCP
     * MCP.so
+    * MCPRepository.com
     * Other known MCP aggregators
   - Security forums: Search for security discussions or reported issues
   - Developer forums: Search for implementation examples and feedback
