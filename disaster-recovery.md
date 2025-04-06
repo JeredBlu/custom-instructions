@@ -1,0 +1,96 @@
+# Prompts for getting the LLM 'back on track' after it has stopped following instructions
+Credit to [Eric Axelrod](https://github.com/ericaxelrod-1)
+ - Tested on 
+  - Claude 3.5 Sonnet
+  - Claude 3.7 Sonnet
+  - Claude 3.7 Sonnet Thinking
+
+# When would I use this
+
+- Sometimes Claude will encounter an issue that it can't resolve, and it will get stuck in a loop
+  - In this loop it will try the same fixes over and over, and it will forget they didn't work 5 seconds ago
+- Once it goes through this loop a few times, it will often ignore Global User Rules and/or Project Rules.
+- When this happens it may
+  - Switch languages or frameworks without user input or approval
+  - Import unnecessary libraries or dependencies
+  - Create folders and files which don't conform to your rules
+    - Folder structure
+    - Naming conventions
+    - Prohibited filetypes
+
+# Why this is a problem
+
+Claude will very quikly junk up your project by
+- Creating duplicate scripts and losing track of which one it should be editing
+- Filling your root or certain subfolders with inappropriate and poorly named
+-- Log files
+-- Test scripts
+- And it will neglect to document most or all of these items
+
+Soon your project will be past the point of no return and you will need to restore to a previous checkpoint
+
+# What to do
+
+- Stop Claude before it causes any more damage to your project
+- Switch from Agent mode to Ask mode so it no longer has edit permissions
+
+# Make claude record everything it knows about the state of the current state of the project
+
+> Why are you trying to do [x}? We had this working just a few minutes ago, you should not need to modify [y].
+> I want you to create a file named @current-state.md. 
+> This document should contain
+> - A list of every known-working function, method, script, etc
+> - A list of every known issue with the current bug you are attempting to resolve
+>   - For each bug, document:
+>    - What we have attempted
+>    - What worked
+>    - What did not work
+>    - Relevant source documentation you have found on this issue
+
+# Start a new prompt session
+
+## Recovery Prompt
+
+> You were just working on [x] in a prior prompt session.  I told you to stop and document the current state of the project.
+>
+> Take your time to read and deeply reflect on @docs to understand the scope of the project. 
+> Deeply reflect on @current-state.md to understand the current issues
+>
+> Take as much time as you need.
+> 
+> Once you have taken time to think deeply about these issues, I want you to:
+> - Summarize each issue so I know you understand
+
+## Issue 1/2/3 prompt
+* If there are multiple distinct bugs/issues, run this prompt for each issue *
+
+> Search the web for resources regarding these specific issues. This may include
+> - Source code for the library/dependency
+> - Git repositories using this library/dependency
+> - Sourceforge issues about this bug
+>
+> Take your time to research and think deeply about these resources. Take as much time as you need.
+>
+> Make sure you follow all rules documented in @.cursor\rules.
+> Take your time to research and think deeply about these rules. Take as much time as you need.
+>
+> For [x] issue
+> - Provide 3-5 possible causes
+> - Distill those possible causes into 1-2 most probable causes
+> - Offer potential solutions to each of the most probable causes
+> - Ask which solution you should proceed with
+
+# Proceeding with the fix
+
+> Proceed with solution 1
+
+* This will cause Claude to focus on only 1 potential solution and should keep it on track *
+
+
+## Once the first bug/issue is fixed
+
+> - Update @current-state.md to indicate that you fixed this issue
+
+** Repeat this prompt as many times as necessary. 
+Start a new chat session each time if you need to.
+This will work as long as it keeps current-state.md updated **
